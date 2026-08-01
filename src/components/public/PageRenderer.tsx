@@ -100,13 +100,13 @@ function BlockRenderer({ block, sectionSettings = {} }: { block: DraftBlock, sec
     case "BUTTON":
       return <InteractiveButton content={content} style={baseStyle} />;
     case "SOCIAL_LINK": {
-      const Icon = getIcon(content.icon || "Globe");
+      const IconComp = getIcon(content.icon || "Globe");
       return (
         <TrackedLink blockId={block.id || ""} href={content.url || "#"} target="_blank" className="p-3 rounded-full hover:opacity-80 transition inline-flex items-center justify-center overflow-hidden shadow-md" style={{ backgroundColor: (style as any)?.backgroundColor || "#27272a", color: (style as any)?.color || undefined }}>
           {content.iconUrl ? (
             <img src={content.iconUrl} alt="Social Icon" className="w-5 h-5 object-contain" />
           ) : (
-            <Icon size={20} />
+            {React.createElement(IconComp, { size: 20 } as any)}
           )}
         </TrackedLink>
       );
