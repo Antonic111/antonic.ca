@@ -1,36 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Antonic Full-Stack Website
 
-## Getting Started
+Production-ready full-stack website for the Antonic creator brand.
 
-First, run the development server:
+## Technology Stack
+- Next.js (App Router)
+- React, TypeScript, Tailwind CSS
+- PostgreSQL & Prisma ORM
+- Auth.js
+- Vitest & Playwright
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Environment Variables
+Create a `.env` file in the root directory:
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/antonic?schema=public"
+AUTH_SECRET="generate-a-secure-secret-here"
+
+ADMIN_INITIAL_EMAIL="admin@antonic.ca"
+ADMIN_INITIAL_PASSWORD="AdminPassword123!"
+
+FOURTHWALL_STORE_URL="https://antonic.fourthwall.com"
+NEXT_PUBLIC_SITE_URL="https://antonic.ca"
+
+STORAGE_PROVIDER="local" # or 's3' in production
+ANALYTICS_RETENTION_DAYS="30"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup & Development
+1. **Install dependencies:**
+   `npm install`
+2. **Setup Database:**
+   Ensure PostgreSQL is running.
+   `npx prisma db push` (or `npx prisma migrate dev` when using migrations)
+3. **Seed Database:**
+   `npx ts-node prisma/seed.ts`
+4. **Run Development Server:**
+   `npm run dev`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deployment
+1. **Vercel**: Connect the GitHub repository to Vercel. Ensure all environment variables are set in the Vercel dashboard.
+2. **Database**: Use a managed PostgreSQL provider (e.g. Supabase, Vercel Postgres, Neon) and set the `DATABASE_URL`.
+3. **Domain & DNS (Cloudflare)**:
+   - Map `antonic.ca` to Vercel via A/CNAME records in Cloudflare.
+   - For `/store`, the current setup uses a Next.js `NextResponse.redirect`. Long-term, you can set up a Cloudflare Worker or Page Rule to redirect `/store` directly to Fourthwall for better performance.
+4. **Domain Migration Notes**:
+   - For `antonic.store` and `antoniccommands.info`, you can set up 301 redirects in Cloudflare pointing them to `https://antonic.ca/store` and `https://antonic.ca/commands`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Testing
+- **Unit Tests**: `npm run test` (Vitest)
+- **E2E Tests**: `npx playwright test` (Playwright)

@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("USER")
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Page {
+  id                  String   @id @default(cuid())
+  slug                String   @unique
+  title               String
+  status              String   @default("DRAFT") // DRAFT, PUBLISHED
+  publishedRevisionId String?
+  revisions           PageRevision[]
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model PageRevision {
+  id          String   @id @default(cuid())
+  pageId      String
+  version     Int      @default(1)
+  status      String   @default("DRAFT") // DRAFT, PUBLISHED, ARCHIVED
+  createdBy   String?
+  createdAt   DateTime @default(now())
+  publishedAt DateTime?
+  settingsJson String?  @db.Text
+
+  page        Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  sections    PageSection[]
+}
+
+model PageSection {
+  id           String   @id @default(cuid())
+  revisionId   String
+  type         String
+  order        Int      @default(0)
+  settingsJson String   @db.Text // Validated layout settings
+  visible      Boolean  @default(true)
+
+  revision     PageRevision @relation(fields: [revisionId], references: [id], onDelete: Cascade)
+  blocks       PageBlock[]
+}
+
+model PageBlock {
+  id          String   @id @default(cuid())
+  sectionId   String
+  type        String
+  order       Int      @default(0)
+  contentJson String   @db.Text // Validated block content
+  styleJson   String   @db.Text // Validated styling overrides
+  visible     Boolean  @default(true)
+
+  section     PageSection @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+}
+
+model CommandCategory {
+  id        String    @id @default(cuid())
+  name      String
+  order     Int       @default(0)
+  commands  Command[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Command {
+  id          String   @id @default(cuid())
+  categoryId  String
+  name        String
+  trigger     String
+  description String
+  usage       String?
+  aliases     String?
+  platforms   String?  // JSON array or comma separated
+  isEnabled   Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  category    CommandCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model PageView {
+  id            String   @id @default(cuid())
+  path          String
+  revisionId    String?
+  sessionId     String
+  deviceClass   String?
+  browserFamily String?
+  country       String?
+  referrer      String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  createdAt     DateTime @default(now())
+}
+
+model LinkClick {
+  id            String   @id @default(cuid())
+  blockId       String
+  revisionId    String?
+  sessionId     String
+  deviceClass   String?
+  browserFamily String?
+  country       String?
+  referrer      String?
+  createdAt     DateTime @default(now())
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  filename  String
+  url       String
+  mimeType  String
+  size      Int
+  altText   String?
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  details   String?  @db.Text
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id                  String   @id @default(cuid())
+  storeUrl            String?
+  analyticsRetention  Int      @default(30) // days
+  seoTitle            String?
+  seoDescription      String?
+  contactEmail        String?
+  
+  fourthwallEnabled   Boolean  @default(false)
+  fourthwallStoreUrl  String?
+  fourthwallToken     String?
+  fourthwallCollection String?  @default("all")
+  fourthwallLimit     Int      @default(4)
+  
+  updatedAt           DateTime @updatedAt
+}

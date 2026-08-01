@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand: #ff3b30;
+  --color-discord: #5865F2;
+  --color-youtube: #FF0000;
+  --color-twitch: #9146FF;
+  --color-kick: #53FC18;
+  --color-tiktok: #00f2fe;
+  --color-instagram: #E1306C;
+  --color-facebook: #1877F2;
+}
+
+@keyframes custom-pulse-tight {
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(1.35); opacity: 0; }
+}
+
+.animate-pulse-tight {
+  animation: custom-pulse-tight 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes fade-in-up {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
+  --card-bg: #141414;
+  --card-border: #262626;
+  --text-muted: #a3a3a3;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card-bg);
+  --color-border: var(--card-border);
+  --color-muted: var(--text-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+/* Base resets and utility classes for animations */
+.glow-on-hover:hover {
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+/* Custom Scrollbar for Dark Theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3f3f46 var(--background);
+}
+
+/* Command button hover animations */
+.command-button {
+  transition: all 0.2s ease;
+}
+
+.command-button:hover {
+  transform: scale(1.05);
+  filter: brightness(1.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.command-button:active {
+  transform: scale(0.98);
+}
+
+.command-button.copied {
+  animation: copyPulse 0.3s ease;
+}
+
+@keyframes copyPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1.05); }
+}
+
+/* Stream Commands page animations */
+.fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.fade-in-up-delay-1 {
+  animation: fade-in-up 0.6s ease-out 0.1s forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.fade-in-up-delay-2 {
+  animation: fade-in-up 0.6s ease-out 0.2s forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.fade-in-up-delay-3 {
+  animation: fade-in-up 0.6s ease-out 0.3s forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.fade-in-up-delay-4 {
+  animation: fade-in-up 0.6s ease-out 0.4s forwards;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
