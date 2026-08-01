@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const blocks = await prisma.block.findMany();
+  const blocks = await prisma.pageBlock.findMany();
   let count = 0;
 
   for (const block of blocks) {
@@ -29,7 +29,7 @@ async function main() {
       }
 
       if (changed) {
-        await prisma.block.update({
+        await prisma.pageBlock.update({
           where: { id: block.id },
           data: { contentJson: content }
         });
