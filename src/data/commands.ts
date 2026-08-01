@@ -84,8 +84,8 @@ export const commandSections = [
         platform: null,
       },
       {
-        aliases: ["!social", "!socials", "!solo", "!solo.to"],
-        description: "Displays my [solo.to](https://solo.to/antonic) with all social media links and additional resources.",
+        aliases: ["!social", "!socials"],
+        description: "Displays a link to [antonic.ca](https://antonic.ca) with all my social media and resources.",
         platform: null,
       },
       {
