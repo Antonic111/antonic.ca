@@ -83,7 +83,7 @@ function BlockRenderer({ block, sectionSettings = {} }: { block: DraftBlock, sec
       );
       if (content.linkUrl) {
         return (
-          <TrackedLink blockId={block.id} href={content.linkUrl} target={content.target === "_blank" ? "_blank" : undefined} className="block transition-transform hover:scale-105 duration-300">
+          <TrackedLink blockId={block.id || ""} href={content.linkUrl} target={content.target === "_blank" ? "_blank" : undefined} className="block transition-transform hover:scale-105 duration-300">
             {imgContent}
           </TrackedLink>
         );
@@ -102,7 +102,7 @@ function BlockRenderer({ block, sectionSettings = {} }: { block: DraftBlock, sec
     case "SOCIAL_LINK": {
       const Icon = getIcon(content.icon || "Globe");
       return (
-        <TrackedLink blockId={block.id} href={content.url || "#"} target="_blank" className="p-3 rounded-full hover:opacity-80 transition inline-flex items-center justify-center overflow-hidden shadow-md" style={{ backgroundColor: (style as any)?.backgroundColor || "#27272a", color: (style as any)?.color || undefined }}>
+        <TrackedLink blockId={block.id || ""} href={content.url || "#"} target="_blank" className="p-3 rounded-full hover:opacity-80 transition inline-flex items-center justify-center overflow-hidden shadow-md" style={{ backgroundColor: (style as any)?.backgroundColor || "#27272a", color: (style as any)?.color || undefined }}>
           {content.iconUrl ? (
             <img src={content.iconUrl} alt="Social Icon" className="w-5 h-5 object-contain" />
           ) : (
@@ -121,7 +121,7 @@ function BlockRenderer({ block, sectionSettings = {} }: { block: DraftBlock, sec
       }
 
       return (
-        <TrackedLink blockId={block.id} href={content.url || "#"} target={content.target === "_blank" ? "_blank" : undefined} className="block group w-full h-full">
+        <TrackedLink blockId={block.id || ""} href={content.url || "#"} target={content.target === "_blank" ? "_blank" : undefined} className="block group w-full h-full">
           <div style={baseStyle} className={`h-full ${content.iconUrl ? 'min-h-[60px]' : ''} relative bg-zinc-900 rounded-xl py-3 shadow-md hover:shadow-xl transition-all hover:bg-zinc-800/80 flex items-center justify-between ${content.iconUrl ? 'pr-4 pl-3 sm:pl-0' : 'px-4'}`}>
             <div className={`flex items-center gap-3 ${content.iconUrl ? '' : 'w-full'}`}>
               {content.iconUrl && (
