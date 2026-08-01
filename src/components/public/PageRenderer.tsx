@@ -106,7 +106,7 @@ function BlockRenderer({ block, sectionSettings = {} }: { block: DraftBlock, sec
           {content.iconUrl ? (
             <img src={content.iconUrl} alt="Social Icon" className="w-5 h-5 object-contain" />
           ) : (
-            {React.createElement(IconComp, { size: 20 } as any)}
+            React.createElement(IconComp, { size: 20 } as any)
           )}
         </TrackedLink>
       );
