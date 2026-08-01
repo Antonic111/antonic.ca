@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Antonic | Pokémon Content Creator",
   description: "Live 7 days a week at 2 PM EST!",
+  icons: {
+    icon: "/site_logo.png",
+  },
 };
 
 export default function RootLayout({

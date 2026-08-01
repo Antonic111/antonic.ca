@@ -25,7 +25,7 @@ export default function LoginForm() {
       if (res?.error) {
         setError("Invalid password");
       } else {
-        router.push("/admin/dashboard");
+        router.push("/admin/builder");
         router.refresh();
       }
     } catch (err) {

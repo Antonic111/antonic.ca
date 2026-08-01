@@ -12,7 +12,7 @@ export default auth((req) => {
   if (isOnAdmin) {
     if (isLoginPage) {
       if (isLoggedIn) {
-        return NextResponse.redirect(new URL("/admin/dashboard", req.nextUrl));
+        return NextResponse.redirect(new URL("/admin/builder", req.nextUrl));
       }
       return NextResponse.next();
     }
